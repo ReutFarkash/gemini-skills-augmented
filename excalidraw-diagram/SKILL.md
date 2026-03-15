@@ -1,15 +1,15 @@
 ---
 name: excalidraw-diagram
-description: Create Excalidraw diagram JSON files that make visual arguments. Augmented for native Obsidian workflow.
+description: Create Excalidraw diagram JSON files that make visual arguments. Use when the user wants to visualize workflows, architectures, or concepts. Augmented for high-fidelity native Obsidian workflow.
 ---
 
-# Excalidraw Diagram Creator (Obsidian Augmented)
+# Excalidraw Diagram Creator (Obsidian v2.0 Augmented)
 
 **Credits:** This skill is an augmented version of the original `excalidraw-diagram` skill by [coleam00](https://github.com/coleam00/excalidraw-diagram-skill).
 
 Generate `.excalidraw.md` files that **argue visually**, natively rendered and validated within Obsidian.
 
-## Obsidian Workflow Mandate
+## 🛠️ Obsidian Workflow Mandate (Primary)
 
 This skill is optimized for environments where **Obsidian** and the **Excalidraw plugin** are active.
 
@@ -53,44 +53,75 @@ Instead of using external Python/Playwright dependencies, use the **Obsidian CLI
 **Never manually adjust individual coordinates to fix clipping or alignment.** 
 Adjusting the `x/y` of a text element without updating its parent container (or vice-versa) **breaks the containerId binding**.
 - **The Symptom:** Text disappears or arrows route through the center of shapes.
-- **The Fix:** If a shape needs to be wider, regenerate the JSON ensuring the shape's width is larger and the text remains centered and bound. Prefer letting the user make final spacing tweaks in the Obsidian UI if the base structure is sound.
+- **The Fix:** If a shape needs to be wider, regenerate the JSON ensuring the shape's width is larger and the text remains centered and bound.
 
 ---
 
-## Design Process (Do This BEFORE Generating JSON)
+## 🎨 Customization & Style
 
-### Step 0: Assess Depth Required
-Before anything else, determine if this needs to be:
-- **Simple/Conceptual**: Abstract shapes, labels, relationships (mental models, philosophies)
-- **Comprehensive/Technical**: Concrete examples, code snippets, real data (systems, architectures, tutorials)
-
-### Step 1: Understand Deeply
-Read the content. For each concept, ask:
-- What does this concept **DO**? (not what IS it)
-- What relationships exist between concepts?
-- What would someone need to SEE to understand this?
-
-### Step 2: Map Concepts to Patterns
-For each concept, find the visual pattern that mirrors its behavior:
-- **Fan-out**: Spawns multiple outputs
-- **Convergence**: Combines inputs into one
-- **Tree**: Has hierarchy/nesting
-- **Timeline**: Is a sequence of steps
-- **Spiral/Cycle**: Loops or improves continuously
-- **Cloud**: Abstract state or context
-- **Assembly line**: Transforms input to output
-
-### Step 3: Generate JSON (Section-by-Section)
-For large diagrams, generate elements in chunks. Use descriptive string IDs and namespace seeds by section (e.g., 100xxx, 200xxx).
+**All colors and brand-specific styles live in one file:** `references/color-palette.md`. Read it before generating any diagram and use it as the single source of truth for all color choices — shape fills, strokes, text colors, evidence artifact backgrounds, everything.
 
 ---
 
-## Quality Checklist
+## 🧠 Core Philosophy: ARGUE, Don't DISPLAY
 
-### Visual Validation (Render Required)
-1. **Rendered via Obsidian**: Diagram has been captured and visually inspected.
-2. **No text overflow**: All text fits within its container.
-3. **No overlapping elements**: Shapes and text don't overlap unintentionally.
-4. **Binding intact**: Text is visible inside its container and arrows connect to edges.
-5. **Readable**: Text is legible in the rendered PNG.
-6. **Balanced composition**: No large empty voids or overcrowded regions.
+A diagram isn't formatted text. It's a visual argument that shows relationships, causality, and flow that words alone can't express.
+
+- **The Isomorphism Test**: If you removed all text, would the structure alone communicate the concept? If not, redesign.
+- **The Education Test**: Could someone learn something concrete from this diagram, or does it just label boxes? Use **Evidence Artifacts** (real code snippets, JSON formats, event names) to teach.
+
+---
+
+## 🔍 Depth Assessment (Step 0)
+
+Before designing, determine what level of detail this diagram needs:
+
+### Simple/Conceptual
+Abstract shapes for philosophies, mental models, or high-level overviews.
+
+### Comprehensive/Technical (Mandatory for Systems)
+Use concrete examples. **You MUST include evidence artifacts.**
+- **Research Mandate:** Look up actual specifications (JSON formats, API endpoints, event names) before drawing.
+- **Multi-Zoom Architecture:** Show the **Summary Flow** (overview), **Section Boundaries** (grouping), and **Detail Inside Sections** (evidence) simultaneously.
+
+---
+
+## 🏗️ Visual Pattern Library
+
+| Pattern | Behavior | Use Case |
+|---------|----------|----------|
+| **Fan-out** | Spawns multiple outputs | Sources, PRDs, root causes |
+| **Convergence** | Combines inputs into one | Aggregation, funnels, synthesis |
+| **Tree** | Hierarchy/Nesting | File systems, org charts (Use lines + text) |
+| **Timeline** | Sequence of steps | Protocols, lifecycles (Use line + dots) |
+| **Spiral/Cycle** | Loops/Improves | Feedback loops, evolution |
+| **Cloud** | Abstract state | Context, memory, conversations |
+| **Assembly line** | Transforms input | Processing, conversion |
+
+**Lines as Structure:** Use `line` elements + free-floating text labels for trees and timelines instead of boxes. It creates a cleaner, more professional result.
+
+---
+
+## 📐 Design Process
+
+1.  **Assess Depth:** Simple vs. Comprehensive.
+2.  **Understand Deeply:** What does it DO? What relationships exist?
+3.  **Map Patterns:** Assign visual patterns to concepts.
+4.  **Variety Check:** Each major concept must use a different visual pattern.
+5.  **Section-by-Section JSON:** Build large diagrams one section at a time. Do NOT generate the entire file in one shot (Claude's output limit is ~32k tokens).
+    - Section 1: Entry point / trigger
+    - Section 2: Main routing / Hero
+    - Section 3: Details / Artifacts
+6.  **Render & Validate Loop:** Run the Obsidian render-view-fix loop until perfect.
+
+---
+
+## ✅ Quality Checklist
+
+1.  **Research Done:** Real specs, formats, and names used?
+2.  **Evidence Included:** Code snippets or data examples present?
+3.  **Minimal Containers:** <30% of text elements are inside boxes? (Prefer free-floating text + hierarchy).
+4.  **No Text Overflow:** All text fits inside its container (if used).
+5.  **Binding Intact:** Text visible inside shapes and arrows connect to edges.
+6.  **Roughness 0:** Clean, crisp modern technical look.
+7.  **Isomorphism:** Does the shape mirror the concept's behavior?
